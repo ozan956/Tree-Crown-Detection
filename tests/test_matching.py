@@ -43,3 +43,25 @@ def test_one_to_one_iou_perfect(two_gt_boxes):
 def test_one_to_one_iou_no_match(two_gt_boxes):
     preds = [(0,0,3,3)]  # iou with box0 = 9/100 < 0.5
     assert match_one_to_one_iou(preds, two_gt_boxes, iou_thr=0.5) == (0, 1, 2)
+
+def test_center_in_box_legacy_is_order_dependent_on_overlap(two_overlapping_boxes):
+    # a single center inside BOTH boxes credits only the first (lowest index) box:
+    # documented legacy (per-center break) behavior.
+    centers = [(7.0, 7.0)]
+    assert match_center_in_box(centers, two_overlapping_boxes, gap=0) == {0}
+    # reversing box order flips which single box is credited -> proves order dependence
+    reversed_boxes = list(reversed(two_overlapping_boxes))
+    assert match_center_in_box(centers, reversed_boxes, gap=0) == {0}
+
+def test_one_to_one_points_no_double_credit_on_overlap(two_overlapping_boxes):
+    # ONE center in the overlap of two boxes: one-to-one credits exactly ONE tree
+    # (tp=1), never both. The other box is a false negative. No double-credit.
+    centers = [(7.0, 7.0)]
+    tp, fp, fn = match_one_to_one_points(centers, two_overlapping_boxes, gap=0)
+    assert (tp, fp, fn) == (1, 0, 1)
+
+def test_one_to_one_points_two_centers_two_overlapping_boxes(two_overlapping_boxes):
+    # two distinct centers, each cleanly in one box's exclusive region -> both matched
+    centers = [(2.0, 2.0), (13.0, 13.0)]
+    tp, fp, fn = match_one_to_one_points(centers, two_overlapping_boxes, gap=0)
+    assert (tp, fp, fn) == (2, 0, 0)
