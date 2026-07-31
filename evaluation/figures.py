@@ -4,7 +4,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 def plot_pr_curve(curve, point, out="results/pr_curve.png"):
-    os.makedirs("results", exist_ok=True)
+    d = os.path.dirname(out)
+    if d: os.makedirs(d, exist_ok=True)
     rec = [c["recall"] for c in curve]
     prec = [c["precision"] for c in curve]
     fig, ax = plt.subplots(figsize=(6, 5))

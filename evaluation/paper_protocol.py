@@ -16,7 +16,7 @@ should be treated as the current headline result — it is kept solely to
 reproduce and document what the paper originally published.
 """
 
-from evaluation.io_utils import load_gt, load_dets, dets_by_image, box_center
+from evaluation.io_utils import load_gt, load_dets, dets_by_image
 from evaluation.matching import match_center_in_box
 
 

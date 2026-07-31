@@ -38,7 +38,9 @@ def build_table(score_thr=0.8, gap=10.0):
         dbi = dets_by_image(dets, score_thr)
         paper = paper_recall_boxes(dbi, gt, gap)
         strict = _strict_box(dbi, gt, 0.5)
-        cm = coco_map("data/annotations.coco.json", [d for d in dets if d["score"] >= score_thr])
+        # AP/AP50 are standard COCO mAP: threshold-free, computed over ALL detections.
+        # paper_recall/strict_* above are at the score_thr operating point (unchanged).
+        cm = coco_map("data/annotations.coco.json", dets)
         rows.append({"method": method, "paper_recall": paper["recall"],
                      "strict_recall": strict["recall"], "strict_precision": strict["precision"],
                      "strict_f1": strict["f1"], "AP": cm["AP"], "AP50": cm["AP50"]})

@@ -16,3 +16,9 @@ def test_coco_map_swin_runs():
     # AP50 for a trained tree detector should be a sane, high-ish number in (0,1]
     assert 0.0 < m["AP50"] <= 1.0
     assert 0.0 <= m["AP"] <= m["AP50"]  # AP (averaged over IoUs) <= AP50
+
+def test_coco_map_empty_dets():
+    # empty detections must not raise (pycocotools loadRes IndexErrors on []);
+    # zeros are the correct COCO mAP for "no predictions".
+    m = coco_map("data/annotations.coco.json", [])
+    assert m == {"AP": 0.0, "AP50": 0.0, "AP75": 0.0}
