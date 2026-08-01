@@ -1,0 +1,189 @@
+\begin{thebibliography}{10}
+
+\bibitem{GFRA}
+{FAO}.
+\newblock Global forest resources assessment 2020: Main report.
+\newblock Technical report, Food \& Agriculture Organization of the UN, 2020.
+
+\bibitem{forest_climate_change}
+Gordon~B Bonan.
+\newblock Forests and climate change: forcings, feedbacks, and the climate
+  benefits of forests.
+\newblock {\em Science}, 320(5882):1444--1449, 2008.
+
+\bibitem{forest_carbon_emission}
+David Whitehead.
+\newblock Forests as carbon sinks - benefits and consequences.
+\newblock {\em Tree Physiology}, 31(9):893--902, 2011.
+
+\bibitem{brazilian_law}
+Thiago~Bandeira Castelo.
+\newblock Brazilian forestry legislation and to combat deforestation government
+  policies in the amazon (brazilian amazon).
+\newblock {\em Ambiente \& Sociedade}, 18:221--242, 2015.
+
+\bibitem{turkey_law_1}
+Aynur~Aydin Co{\c{s}}kun and G{\"o}k{\c{c}}e Gen{\c{c}}ay.
+\newblock Kyoto protocol and deforestation: A legal analysis on turkish
+  environment and forest legislation.
+\newblock {\em Forest Policy and Economics}, 13(5):366--377, 2011.
+
+\bibitem{turkey_law_2}
+G{\"o}k{\c{c}}e Gen{\c{c}}ay, {\"U}st{\"u}ner Birben, and Aynur Ayd{\i}n.
+\newblock To be a developed country or not to be? the effect of the paris
+  agreement on turkish forest law.
+\newblock {\em Environmental Monitoring and Assessment}, 191:1--14, 2019.
+
+\bibitem{Korpela20032006}
+Perttu Anttila~Ilkka Korpela and Juho Pitk{\"a}nen.
+\newblock The performance of a local maxima method for detecting individual
+  tree tops in aerial photographs.
+\newblock {\em International Journal of Remote Sensing}, 27(6):1159--1175,
+  2006.
+
+\bibitem{huo2020individual}
+Langning Huo and Eva Lindberg.
+\newblock Individual tree detection using template matching of multiple rasters
+  derived from multispectral airborne laser scanning data.
+\newblock {\em International Journal of Remote Sensing}, 41(24):9525--9544,
+  2020.
+
+\bibitem{larsen2011comparison}
+Morten Larsen, Mats Eriksson, Xavier Descombes, Guillaume Perrin, Tomas
+  Brandtberg, and Fran{\c{c}}ois~A Gougeon.
+\newblock Comparison of six individual tree crown detection algorithms
+  evaluated under varying forest conditions.
+\newblock {\em International Journal of Remote Sensing}, 32(20):5827--5852,
+  2011.
+
+\bibitem{durgut2025multi}
+Ozan Durgut and Cem {\"U}nsalan.
+\newblock Multi-model tree detection in satellite images with weighted boxes
+  fusion.
+\newblock {\em Signal, Image and Video Processing}, 19(1):1--8, 2025.
+
+\bibitem{xiao2023csswin}
+Dong Xiao, Zhihao Kang, Yanhua Fu, Zhenni Li, and Mengying Ran.
+\newblock Csswin-unet: a swin-unet network for semantic segmentation of remote
+  sensing images by aggregating contextual information and extracting spatial
+  information.
+\newblock {\em International Journal of Remote Sensing}, 44(23):7598--7625,
+  2023.
+
+\bibitem{ren2024local}
+Dong Ren, Falin Li, Hang Sun, Li~Liu, Shun Ren, and Mei Yu.
+\newblock Local-enhanced multi-scale aggregation swin transformer for semantic
+  segmentation of high-resolution remote sensing images.
+\newblock {\em International Journal of Remote Sensing}, 45(1):101--120, 2024.
+
+\bibitem{niccolai2010decision}
+Andrew~M Niccolai, Aaron Hohl, Melissa Niccolai, and Chadwick~Dearing Oliver.
+\newblock Decision rule-based approach to automatic tree crown detection and
+  size classification.
+\newblock {\em International Journal of Remote Sensing}, 31(12):3089--3123,
+  2010.
+
+\bibitem{korznikov2021using}
+Kirill~A Korznikov, Dmitry~E Kislov, Jan Altman, Ji{\v{r}}{\'\i} Dole{\v{z}}al,
+  Anna~S Vozmishcheva, and Pavel~V Krestov.
+\newblock Using u-net-like deep convolutional neural networks for precise tree
+  recognition in very high resolution rgb (red, green, blue) satellite images.
+\newblock {\em Forests}, 12(1):66, 2021.
+
+\bibitem{moussaid2021tree}
+Abdellatif Moussaid, Sanaa El~Fkihi, and Yahya Zennayi.
+\newblock Tree crown segmentation and classification in overlapping orchards
+  based on satellite images and unsupervised learning algorithms.
+\newblock {\em Journal of Imaging}, 7(11):241, 2021.
+
+\bibitem{JAIN19911167}
+Anil~K. Jain and Farshid Farrokhnia.
+\newblock Unsupervised texture segmentation using gabor filters.
+\newblock {\em Pattern Recognition}, 24(12):1167--1186, 1991.
+
+\bibitem{ozcan_abdullah}
+Abdullah~H. {\"O}zcan, Dilara Hisar, Yetkin Sayar, and Cem {\"U}nsalan.
+\newblock Tree crown detection and delineation in satellite images using
+  probabilistic voting.
+\newblock {\em Remote Sensing Letters}, 8(8):761--770, 2017.
+
+\bibitem{liu2021swin}
+Ze~Liu, Yutong Lin, Yue Cao, Han Hu, Yixuan Wei, Zheng Zhang, Stephen Lin, and
+  Baining Guo.
+\newblock Swin transformer: Hierarchical vision transformer using shifted
+  windows.
+\newblock In {\em Proceedings of ICCV}, pages 10012--10022, 2021.
+
+\bibitem{girshick2014rich}
+Ross Girshick, Jeff Donahue, Trevor Darrell, and Jitendra Malik.
+\newblock Rich feature hierarchies for accurate object detection and semantic
+  segmentation.
+\newblock In {\em Proceedings of CVPR}, pages 580--587, 2014.
+
+\bibitem{ren2015faster}
+Shaoqing Ren.
+\newblock Faster r-cnn: Towards real-time object detection with region proposal
+  networks.
+\newblock {\em arXiv:1506.01497}, 2015.
+
+\bibitem{nguyen2020evaluation}
+Nhat-Duy Nguyen, Tien Do, Thanh~Duc Ngo, and Duy-Dinh Le.
+\newblock An evaluation of deep learning methods for small object detection.
+\newblock {\em Journal of Electrical and Computer Engineering},
+  2020(1):3189691, 2020.
+
+\bibitem{liu2021survey}
+Yang Liu, Peng Sun, Nickolas Wergeles, and Yi~Shang.
+\newblock A survey and performance evaluation of deep learning methods for
+  small object detection.
+\newblock {\em Expert Systems with Applications}, 172:114602, 2021.
+
+\bibitem{redmon2016you}
+J~Redmon.
+\newblock You only look once: Unified, real-time object detection.
+\newblock In {\em Proceedings of CVPR 2016}, 2016.
+
+\bibitem{redmon2018yolov3}
+Joseph Redmon.
+\newblock Yolov3: An incremental improvement.
+\newblock {\em arXiv:1804.02767}, 2018.
+
+\bibitem{wang2022remote}
+Yi~Wang, Syed Muhammad~Arsalan Bashir, Mahrukh Khan, Qudrat Ullah, Rui Wang,
+  Yilin Song, Zhe Guo, and Yilong Niu.
+\newblock Remote sensing image super-resolution and object detection: Benchmark
+  and state of the art.
+\newblock {\em Expert Systems with Applications}, 197:116793, 2022.
+
+\bibitem{carion2020end}
+Nicolas Carion, Francisco Massa, Gabriel Synnaeve, Nicolas Usunier, Alexander
+  Kirillov, and Sergey Zagoruyko.
+\newblock End-to-end object detection with transformers.
+\newblock In {\em Proceedings of ECCV}, pages 213--229, 2020.
+
+\bibitem{zhu2020deformable}
+Xizhou Zhu, Weijie Su, Lewei Lu, Bin Li, Xiaogang Wang, and Jifeng Dai.
+\newblock Deformable detr: Deformable transformers for end-to-end object
+  detection.
+\newblock {\em arXiv:2010.04159}, 2020.
+
+\bibitem{solovyev2021weighted}
+Roman Solovyev, Weimin Wang, and Tatiana Gabruseva.
+\newblock Weighted boxes fusion: Ensembling boxes from different object
+  detection models.
+\newblock {\em Image and Vision Computing}, 107:104117, 2021.
+
+\bibitem{10.3389/ffgc.2024.1495544}
+Sule~Nur Topg{\"u}l, Elif Sertel, Samet Aksoy, Cem {\"U}nsalan, and Johan E.~S.
+  Fransson.
+\newblock Vhrtrees: a new benchmark dataset for tree detection in satellite
+  imagery and performance evaluation with yolo-based models.
+\newblock {\em Frontiers in Forests and Global Change}, 7, 2025.
+
+\bibitem{chen2019mmdetection}
+Kai Chen, Jiaqi Wang, Jiangmiao Pang, Yuhang Cao, Yu~Xiong, Xiaoxiao Li,
+  Shuyang Sun, Wansen Feng, Ziwei Liu, Jiarui Xu, et~al.
+\newblock Mmdetection: Open mmlab detection toolbox and benchmark.
+\newblock {\em arXiv:1906.07155}, 2019.
+
+\end{thebibliography}
