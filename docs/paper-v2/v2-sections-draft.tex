@@ -1,0 +1,228 @@
+%% =====================================================================
+%%  V2 DRAFT SECTIONS — reframed around the defensible novel core.
+%%  These are drop-in replacements / additions for article-v1.tex.
+%%  Every number here is reproduced by the evaluation/ and improvement/
+%%  modules (see results/*.md). Rationale for each change is in the
+%%  comment above it. NOT auto-merged — review and paste per section.
+%%
+%%  Summary of what changed from v1 and WHY:
+%%   1. Abstract + contributions: the novelty is no longer "a novel
+%%      rule-based approach" (the audit found rule-based hybrids, WBF, and
+%%      appearance filtering are all established). The novelty is the
+%%      QUANTIFIED complementarity: traditional cues recover trees beyond
+%%      the deep-ensemble detection ceiling, characterised mechanistically.
+%%   2. Results: the recall-only "96%% / +4.8%%" headline is replaced by a
+%%      full precision/recall/F1 + mAP table under one-to-one matching. The
+%%      original 96%% is retained honestly as the v1 metric it reproduces.
+%%   3. Honest trade-off + the precision gate that resolves it.
+%%   4. New limitations subsection.
+%% =====================================================================
+
+
+%% ---------------------------------------------------------------------
+%% REPLACEMENT ABSTRACT
+%% Why: v1 abstract sells "a novel rule-based approach" and frames the
+%% result as "increase the number of detected tree crowns" (recall only).
+%% v2 leads with the quantified beyond-ceiling finding and reports both
+%% recall AND precision so the contribution survives review.
+%% ---------------------------------------------------------------------
+\begin{abstract}
+Global warming, loss of biodiversity, and air pollution are among the most
+significant problems facing Earth, and monitoring forests is central to
+addressing them. Automatic tree crown detection from satellite imagery is
+therefore an important task, approached by both traditional image-processing
+and deep-learning methods. In this study we ask a specific question: once a
+strong ensemble of deep detectors has been applied, is there anything a
+traditional method can still contribute? We combine five deep detectors with
+weighted boxes fusion (WBF) and a traditional pipeline (illumination-invariant
+colour and a Gabor filter bank feeding a watershed/local-maxima detector)
+through a rule-based integration step. Evaluating on a benchmark of 222 test
+images containing 13{,}552 trees under one-to-one matching, we report precision,
+recall, and $F_1$ for every method rather than recall alone. Our central
+finding is that the traditional step recovers 448 true crowns (3.3 percentage
+points) that lie \emph{beyond the detection ceiling of the full six-model
+deep-learning stack at its most permissive thresholds} --- trees no detector
+proposes at any confidence. We show these recovered crowns are systematically
+small (a median crown area $2.44\times$ below detected crowns) and spectrally
+faint, which explains why appearance-trained detectors miss them and a
+texture/local-maxima operator recovers them. We further show that a lightweight
+appearance gate on the traditional-only detections removes the non-tree
+false positives they introduce, so the integrated detector dominates the WBF
+ensemble on the precision--recall frontier ($F_1$ 0.921 $\rightarrow$ 0.934).
+We report the advantages, the precision cost, and the limitations of the
+approach.
+\end{abstract}
+
+
+%% ---------------------------------------------------------------------
+%% ADD to the end of the Introduction: an explicit CONTRIBUTIONS list.
+%% Why: v1 never states contributions explicitly, and calls the method
+%% "novel" without isolating what is actually new vs. established. This
+%% list is honest about which parts are contributions and which are
+%% competent use of known tools.
+%% ---------------------------------------------------------------------
+\paragraph{Contributions.} We make the following contributions, and are
+explicit about their novelty:
+\begin{itemize}
+  \item \textbf{(Primary, novel)} A quantified, benchmark-backed measurement of
+  the \emph{complementarity} between traditional and deep detectors for tree
+  crowns: a traditional operator recovers 3.3\% of trees beyond the full
+  deep-ensemble ceiling, and we characterise \emph{why} (small, spectrally
+  faint crowns). Prior hybrid studies assert complementarity qualitatively;
+  we measure it.
+  \item \textbf{(Methodological)} A rule-based integration procedure that
+  decides, per candidate, whether to trust the detector, a neighbour, or the
+  traditional evidence. The individual operations are standard; the codified
+  decision procedure and its evaluation are the contribution.
+  \item \textbf{(Evaluation)} A rigorous re-evaluation protocol
+  (one-to-one matching with precision/recall/$F_1$ and COCO mAP, plus a
+  precision--recall operating-curve analysis) that corrects the recall-only
+  scoring common in this sub-area.
+  \item \textbf{(Engineering)} A faithful implementation of the traditional
+  features the method requires (a multi-orientation, multi-scale Gabor bank and
+  an illumination-invariant colour feature) and an appearance gate that removes
+  the false positives introduced by the traditional step.
+\end{itemize}
+
+
+%% ---------------------------------------------------------------------
+%% REPLACEMENT for Section 5.3 "Performance of Deep Learning Methods"
+%% Why: v1 reports only "12353 / 91.2%%" with no precision. v2 gives the
+%% full per-method table under one-to-one matching + standard mAP.
+%% ---------------------------------------------------------------------
+\subsection{Performance of Deep Learning Methods}
+
+We evaluate each detector and the WBF ensemble under one-to-one (Hungarian)
+matching between predictions and ground-truth boxes at an intersection-over-union
+threshold of 0.5, which --- unlike a recall-only count --- penalises false
+positives. We report precision, recall, and $F_1$ at the operating point used by
+the integration pipeline (detector score $\geq 0.8$), and COCO mean average
+precision (AP, AP$_{50}$) computed over all detections (threshold-free).
+Table~\ref{tab:results} summarises the results on the 13{,}552-tree test set.
+
+\begin{table}[htbp]
+\centering
+\caption{Detection performance on the test set (222 images, 13{,}552 trees).
+Precision/recall/$F_1$ are one-to-one matched at IoU $0.5$, detector score
+$\geq 0.8$; AP/AP$_{50}$ are standard COCO mAP over all detections. The
+integrated method outputs points, so mAP is not applicable.}
+\label{tab:results}
+\begin{tabular}{lccccc}
+\toprule
+Method & Precision & Recall & $F_1$ & AP & AP$_{50}$ \\
+\midrule
+Swin Transformer   & 0.979 & 0.810 & 0.886 & 0.504 & 0.856 \\
+Cascade R-CNN      & 0.984 & 0.786 & 0.874 & 0.512 & 0.855 \\
+Deformable DETR    & \textbf{0.992} & 0.725 & 0.838 & 0.492 & 0.856 \\
+Faster R-CNN       & 0.974 & 0.822 & 0.892 & 0.500 & 0.846 \\
+YOLOv3             & 0.985 & 0.549 & 0.705 & 0.477 & 0.848 \\
+WBF ensemble       & 0.968 & 0.878 & 0.921 & 0.520 & \textbf{0.864} \\
+\midrule
+Integrated (this work)        & 0.833 & 0.971 & 0.897 & n/a & n/a \\
+Integrated + appearance gate  & 0.962 & 0.908 & \textbf{0.934} & n/a & n/a \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Among individual detectors, Faster R-CNN attains the best $F_1$ (0.892). The WBF
+ensemble improves over every single model ($F_1$ 0.921, recall 0.878 at
+precision 0.968), confirming the value of multi-model fusion reported in our
+prior work~\cite{durgut2025multi}. Notably, all detectors saturate near
+AP$_{50}\approx 0.85$; the ensemble's advantage is in recall at high precision,
+not in a higher AP$_{50}$.
+
+For reference and reproducibility, under the original recall-only protocol used
+in the conference version of this work (a ground-truth crown is counted as
+detected if any prediction centre falls within it), the ensemble reaches
+91.2\% (12{,}353/13{,}552) and the integrated method 96.0\% (13{,}012/13{,}552).
+We report the one-to-one metrics above as the primary results because the
+recall-only protocol does not account for false positives.
+
+
+%% ---------------------------------------------------------------------
+%% REPLACEMENT for Section 5.4 "Performance of Rule-based Algorithm"
+%% Why: v1 attributes the gain to "solving small/close trees" from figures
+%% only. v2 proves the beyond-ceiling recovery quantitatively, gives the
+%% mechanism, and is honest about the precision cost + the gate that fixes it.
+%% ---------------------------------------------------------------------
+\subsection{Performance of the Rule-based Integration}
+
+\paragraph{Recovery beyond the deep-ensemble ceiling.}
+The key question is whether the traditional step adds detections that the deep
+ensemble fundamentally cannot produce, as opposed to detections that a lower
+score threshold would also yield. To test this, we take the union of all six
+detectors' boxes \emph{at their most permissive score thresholds} --- the
+theoretical ceiling of what the deep-learning stack can propose --- and measure
+its ground-truth coverage. This union reaches 94.2\% of trees; the WBF ensemble
+reaches 92.5\%; the best single detector reaches at most 86.9\%. The integrated
+method reaches 97.5\%. Thus the traditional step recovers a net 448 crowns
+(3.3\%) that \emph{no} detector proposes at \emph{any} confidence, and a
+beyond-ceiling set of 692 crowns hit by the integration but by no detector. The
+common objection ``simply lower the detector threshold'' is therefore
+insufficient: every detector is already at its floor.
+
+\paragraph{Why the detectors miss these crowns.}
+Characterising the recovered crowns against the detected population reveals a
+consistent pattern (Table~\ref{tab:beyond}). Beyond-ceiling crowns have a median
+area of 788\,px$^2$ versus 1924\,px$^2$ for detected crowns --- $2.44\times$
+smaller, with 82\% falling below the 25th percentile of detected-crown area ---
+and are brighter, less saturated, and lower in excess-green, i.e.\ small and
+spectrally faint. They retain higher local texture contrast, which is precisely
+the cue the Gabor/local-maxima operator responds to. Appearance-trained
+detectors are least confident on small faint crowns and drop them below any
+usable threshold, whereas a texture/extremum operator, which does not rely on
+learned appearance priors, still fires. A visual sample confirms the recovered
+detections are genuine small crowns rather than annotation artefacts.
+
+\begin{table}[htbp]
+\centering
+\caption{Median properties of ground-truth crowns reachable by the deep-detector
+union versus those recovered only beyond that ceiling.}
+\label{tab:beyond}
+\begin{tabular}{lcc}
+\toprule
+ & DL-reachable (12{,}762) & Beyond-ceiling (692) \\
+\midrule
+Crown area (px$^2$)     & 1924 & 788 \\
+Brightness (HSV $V$)    & 95.1 & 102.5 \\
+Saturation              & 86.0 & 59.9 \\
+Excess-green            & 22.3 & 11.1 \\
+Local texture (std)     & 26.8 & 32.4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{The precision cost and how we resolve it.}
+Recovering faint crowns with a traditional operator also introduces false
+positives: the traditional-only detections fire on grass, bare soil, and
+rooftops, so the integrated method trades precision (0.833) for recall (0.971)
+relative to the ensemble (Table~\ref{tab:results}). Of its 2{,}647 false
+positives, 85\% are traditional-only points far from any reliable detector box.
+We therefore add a lightweight appearance gate: for each traditional-only
+candidate we classify a crown-sized crop as tree vs.\ non-tree from
+brightness, chromaticity, and texture features, keeping detections near a
+reliable detector box unconditionally. Trained and evaluated on
+image-disjoint halves of the test set, the gate raises precision to 0.962 while
+retaining recall 0.908, giving $F_1 = 0.934$ --- above the WBF ensemble's 0.921
+at a recall the ensemble cannot reach. The integrated detector thus
+\emph{dominates} the ensemble on the precision--recall frontier rather than
+merely trading along it.
+
+
+%% ---------------------------------------------------------------------
+%% NEW subsection to add before Conclusion.
+%% Why: v1 has no limitations section; reviewers expect one, and stating
+%% these ourselves is far stronger than having them raised against us.
+%% ---------------------------------------------------------------------
+\subsection{Limitations}
+Three limitations bound our claims. First, the complementarity is quantified on
+a single dataset covering the Marmara and Mediterranean regions of Turkey; the
+$2.44\times$-smaller mechanism is plausibly general, but the specific 3.3\%
+magnitude and the appearance-gate coefficients are dataset-dependent and require
+re-fitting for other biomes. Second, ``beyond-ceiling'' is defined relative to
+these six detectors; a detector trained specifically for tiny crowns could
+shrink the gap, so the finding characterises the complementarity of the current
+strong ensemble rather than a permanent limit of deep detection. Third, the
+appearance gate is supervised; for unlabelled imagery it must be trained once on
+a labelled subset, which the image-disjoint evaluation here is designed to
+estimate.
