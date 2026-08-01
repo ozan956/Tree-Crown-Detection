@@ -19,7 +19,7 @@ OI = {
     "purple": "#CC79A7", "black": "#000000", "grey": "#999999",
 }
 plt.rcParams.update({
-    "figure.dpi": 150, "font.size": 11, "axes.grid": True,
+    "figure.dpi": 200, "font.size": 12, "pdf.fonttype": 42, "ps.fonttype": 42, "axes.grid": True,
     "grid.alpha": 0.25, "axes.axisbelow": True, "axes.spines.top": False,
     "axes.spines.right": False,
 })
@@ -61,8 +61,10 @@ BEYOND = {  # feature: (dl_reachable_median, beyond_ceiling_median)
 
 def _save(fig, name):
     os.makedirs(OUT, exist_ok=True)
-    fig.tight_layout(); fig.savefig(f"{OUT}/{name}.png", bbox_inches="tight")
-    plt.close(fig); print(f"wrote {OUT}/{name}.png")
+    fig.tight_layout()
+    fig.savefig(f"{OUT}/{name}.png", bbox_inches="tight")
+    fig.savefig(f"{OUT}/{name}.pdf", bbox_inches="tight")  # vector for publication
+    plt.close(fig); print(f"wrote {OUT}/{name}.{{png,pdf}}")
 
 
 def fig_f1_bars():
@@ -83,7 +85,6 @@ def fig_f1_bars():
     ax.set_xlim(0.6, 1.0)
     for yi, v in zip(y, f1):
         ax.text(v + 0.004, yi, f"{v:.3f}", va="center", fontsize=9)
-    ax.set_title("Detection $F_1$ by method")
     _save(fig, "fig1_f1_by_method")
 
 
@@ -115,11 +116,8 @@ def fig_pr_space():
         pp = f * rr / (2 * rr - f)
         ok = (pp > 0) & (pp <= 1)
         ax.plot(rr[ok], pp[ok], color=OI["grey"], lw=0.8, ls=":", alpha=0.6)
-    ax.text(0.905, 0.66, "dotted: iso-$F_1$ (0.7, 0.8, 0.9)", fontsize=7.5,
-            color=OI["grey"], ha="center", style="italic")
     ax.set_xlabel("Recall"); ax.set_ylabel("Precision")
     ax.set_xlim(0.5, 1.0); ax.set_ylim(0.62, 1.0)
-    ax.set_title("Methods in precision–recall space")
     _save(fig, "fig2_pr_space")
 
 
@@ -141,9 +139,6 @@ def fig_coverage_ladder():
     # annotate the beyond-ceiling gap
     ax.annotate("", xy=(97.5, len(names)-1), xytext=(94.2, len(names)-1),
                 arrowprops=dict(arrowstyle="<->", color=OI["vermilion"], lw=1.5))
-    ax.text(95.85, len(names)-1-0.42, "+3.3 pp\nbeyond DL ceiling",
-            color=OI["vermilion"], fontsize=8.5, ha="center", va="top")
-    ax.set_title("Tree coverage: detectors vs. their union vs. integrated")
     _save(fig, "fig3_coverage_ladder")
 
 
@@ -165,7 +160,6 @@ def fig_beyond_ceiling_features():
     ax.set_ylabel("Median value (normalized to DL-reachable = 1.0)")
     ax.set_ylim(0, 1.5)
     ax.legend(loc="upper right", fontsize=9, framealpha=0.9)
-    ax.set_title("What deep detectors miss: beyond-ceiling crowns are\nsmaller, fainter, more textured")
     _save(fig, "fig4_beyond_ceiling_features")
 
 
@@ -188,7 +182,6 @@ def fig_gate_dial():
     ax.set_ylabel("$F_1$")
     ax.set_ylim(0.88, 0.945)
     ax.legend(loc="lower right", fontsize=8.5)
-    ax.set_title("Precision gate: a recovery-vs-$F_1$ dial\n(labels = fraction of beyond-ceiling recoveries retained)")
     _save(fig, "fig5_gate_dial")
 
 
@@ -202,15 +195,12 @@ def fig_density_dual():
     a1.bar(names, f1, color=cols, width=0.6)
     for i, v in enumerate(f1): a1.text(i, v+0.003, f"{v:.3f}", ha="center", fontsize=9)
     a1.set_ylim(0.8, 0.95); a1.set_ylabel("Detection $F_1$")
-    a1.set_title("As a detector")
     # panel 2: what density is actually good at (count MAE, lower=better) - single bar w/ context
     a2.bar(["Density-map\ncounter"], [4.63], color=OI["purple"], width=0.4)
     a2.text(0, 4.63+0.06, "4.63", ha="center", fontsize=9)
     a2.set_ylabel("Count MAE (trees / image, lower = better)")
     a2.set_ylim(0, 8)
     a2.text(0, 6.6, "median 53\ntrees/image\n(~8% error)", ha="center", fontsize=8.5, color=OI["grey"])
-    a2.set_title("As a counter")
-    fig.suptitle("Density-map baseline: strong counter, weaker detector", y=1.02)
     _save(fig, "fig6_density_baseline")
 
 
