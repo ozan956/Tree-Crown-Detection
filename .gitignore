@@ -12,3 +12,6 @@ data_neon/
 *.fdb_latexmk
 *.blg
 *.synctex.gz
+overleaf/*.pdf
+overleaf/*.bbl
+overleaf.zip
