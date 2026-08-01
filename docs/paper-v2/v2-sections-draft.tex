@@ -118,11 +118,18 @@ Faster R-CNN       & 0.974 & 0.822 & 0.892 & 0.500 & 0.846 \\
 YOLOv3             & 0.985 & 0.549 & 0.705 & 0.477 & 0.848 \\
 WBF ensemble       & 0.968 & 0.878 & 0.921 & 0.520 & \textbf{0.864} \\
 \midrule
+Density-map counter$^\dagger$ & 0.888 & 0.834 & 0.860 & n/a & n/a \\
+\midrule
 Integrated (this work)                & 0.833 & 0.971 & 0.897 & n/a & n/a \\
 Integrated + gate (recovery-pres.)    & 0.893 & 0.957 & 0.924 & n/a & n/a \\
 Integrated + gate ($F_1$-max)         & 0.962 & 0.908 & \textbf{0.934} & n/a & n/a \\
 \bottomrule
-\end{tabular}
+\end{tabular}\\[2pt]
+{\footnotesize $^\dagger$Density-map counter (CSRNet-style regression) trained on
+the same data as a modern baseline; it is a strong \emph{counter} (test count
+MAE 4.63 trees/image) but a weaker \emph{detector}, its best detection $F_1$
+(0.860) falling below both the ensemble and the integrated method. Peak-decode
+thresholds were tuned for best $F_1$.}
 \end{table}
 
 Among individual detectors, Faster R-CNN attains the best $F_1$ (0.892). The WBF
