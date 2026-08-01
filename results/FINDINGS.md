@@ -74,6 +74,20 @@ box methods, center-in-box ±10 px for the integrated method's points). AP
 detections regardless of score — a fundamentally different axis from the
 operating-point recall/precision/F1 columns.
 
+The ≥ 0.8 operating point is not a threshold we chose for this
+re-evaluation — it is inherited from the paper's own integration
+pipeline, which filters deep-learning detections at score ≥ 0.8 before
+handing them to the rule-based step; using it here is a faithful
+reproduction of the paper's setup, not a new methodological choice. It
+also does not drive the comparison: WBF's F1 is essentially flat across
+thresholds 0.5–0.8 (F1 ≈ 0.921–0.925 across that range, §6), so none of
+the conclusions above hinge on this specific value. Separately, note
+that the recall/precision/F1 columns use one-to-one matching at
+IoU ≥ 0.5 (the standard COCO AP50 convention), whereas the AP column
+independently averages over IoU thresholds 0.5:0.95 — a stricter,
+threshold-free axis — which is why AP (~0.5) is substantially lower than
+AP50 (~0.86) for every box method above.
+
 | method | paper_recall(v1 legacy) | strict_recall | strict_precision | strict_f1 | AP | AP50 |
 |---|---|---|---|---|---|---|
 | swin | 0.810 | 0.810 | 0.979 | 0.886 | 0.504 | 0.856 |
@@ -186,6 +200,25 @@ traditional-vision integration step is empirically real. What it is not,
 however, is free — see §5 and §9 for the honest cost side of that
 statement.
 
+One asymmetry in the comparison above is worth addressing head-on: the
+WBF curve is scored with IoU ≥ 0.5 box matching, while the integrated
+point at (0.971, 0.833) is scored with the more permissive
+center-in-box criterion — a reviewer could reasonably ask whether
+integrated's apparent edge is just an artifact of the laxer matcher. It
+is not. Scoring WBF itself under that same center-in-box criterion, at
+its most permissive score threshold (≥ 0.0), reaches only **92.5%**
+recall (12532/13552, §8) — still **3.5 points below** the integrated
+method's **96.0%** (13012/13552) center-in-box recall (§2) — so the
+integrated method's advantage survives an apples-to-apples,
+same-criterion comparison, not just the cross-criterion one drawn above.
+This asymmetry also does not threaten the honesty claim in §5 that
+integrated's F1 (0.897) is below WBF's F1 (0.921): the center-in-box
+criterion is the *more* generous of the two, so it can only inflate
+integrated's true positives; scoring integrated under the stricter
+IoU-based criterion instead would push its precision and F1 down
+further, making the "integrated F1 < WBF F1" conclusion conservative,
+not fragile.
+
 ## 7. Sensitivity to the matching gap
 
 The strict one-to-one protocol for point-based matching admits a ±`gap`
@@ -282,7 +315,15 @@ to 0.05 and traced its full precision–recall curve (Figure, `pr_curve.png`).
 The curve's maximum achievable recall, at its most permissive swept
 threshold, is 0.926; the integrated method's recall of 0.971 lies strictly
 beyond this maximum and is not reachable at any score threshold on the
-ensemble's curve. This is direct evidence that the traditional-vision
+ensemble's curve. Because that curve is scored with IoU-based matching
+while the integrated point uses the more permissive center-in-box
+criterion, we also checked the comparison on an apples-to-apples,
+same-criterion basis: scoring WBF itself with center-in-box matching at
+its most permissive threshold reaches only 92.5% recall (12532/13552),
+3.5 points below the integrated method's 96.0% (13012/13552) under that
+identical criterion — confirming the gap is not an artifact of comparing
+across two different matching definitions. This is direct evidence that
+the traditional-vision
 integration step recovers ground-truth trees for which the deep-learning
 ensemble never proposes a candidate box at any confidence level, rather
 than merely re-surfacing low-confidence detections the ensemble had

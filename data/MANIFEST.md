@@ -2,7 +2,7 @@
 
 This directory is a vendored, read-only snapshot of the evaluation inputs used
 by the Phase 1 rigorous-evaluation module. All files were copied verbatim
-(no transformation) from the three untracked sibling upload folders below on
+(no transformation) from the two untracked sibling upload folders below on
 2026-07-31, and their record counts were verified against the fixed ground
 truth for this project. Every downstream evaluation task reads exclusively
 from `data/` — never from the `wbf_test-*` source folders.
