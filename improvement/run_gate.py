@@ -17,7 +17,8 @@ import cv2
 from evaluation.io_utils import load_gt, load_points, load_dets, dets_by_image
 from evaluation.matching import match_one_to_one_points
 from improvement.precision_gate import (
-    PrecisionGate, crop_features, box_centers, is_near_box, NEAR_SCORE, NEAR_DIST,
+    PrecisionGate, crop_features, box_centers, is_near_box, merge_close_points,
+    NEAR_SCORE, NEAR_DIST,
 )
 
 IMG_DIR = ("wbf_test-20260731T192532Z-1-002/wbf_test/beril-ozan-cem-work/"
@@ -63,7 +64,7 @@ def build_samples():
                 if is_near_box(x, y, wc):
                     rec["near_tp" if i in matched else "near_fp"] += 1
                 else:
-                    f = crop_features(img, x, y) if img is not None else None
+                    f = crop_features(img, x, y, wbf_centers=wc) if img is not None else None
                     if f is None:
                         # border point we can't feature — treat as kept (rare)
                         rec["near_tp" if i in matched else "near_fp"] += 1
@@ -117,23 +118,88 @@ def evaluate(threshold=0.5, seed_order=None):
     }
 
 
+def _kept_points_per_image(gate, per_coords, iid):
+    """Points kept by near-rule + gate@gate.threshold for one image, as (x,y) list."""
+    r = per_coords[iid]
+    kept = list(r["near_xy"])                       # near points always kept
+    if r["far_xy"]:
+        keep = gate.keep(r["far_X"])
+        kept += [xy for xy, k in zip(r["far_xy"], keep) if k]
+    return kept
+
+
+def build_coords():
+    """Like build_samples but also keeps point coordinates + GT boxes, for NMS."""
+    ann = json.load(open(GT_PATH))
+    names = {im["id"]: im["file_name"] for im in ann["images"]}
+    gt = load_gt(); pts = load_points()
+    wbf = dets_by_image(load_dets("data/wbf/best_fuse.json"), NEAR_SCORE)
+    per = {}
+    for iid, boxes in gt.items():
+        P = pts.get(iid, [])
+        r = {"near_xy": [], "far_xy": [], "far_X": [], "boxes": boxes}
+        if P:
+            img = cv2.imread(os.path.join(IMG_DIR, names[iid]))
+            wc = box_centers(wbf.get(iid, []))
+            for (x, y) in P:
+                if is_near_box(x, y, wc):
+                    r["near_xy"].append((x, y))
+                else:
+                    f = crop_features(img, x, y, wbf_centers=wc) if img is not None else None
+                    if f is None:
+                        r["near_xy"].append((x, y)); continue
+                    r["far_xy"].append((x, y)); r["far_X"].append(f)
+        per[iid] = r
+    return per
+
+
+def evaluate_nms(threshold=0.4, min_dist=26.0, seed_order=None):
+    """Gate@threshold with vs without point-NMS on kept points, image-disjoint."""
+    per = build_coords()
+    ids = sorted(per.keys()) if seed_order is None else seed_order
+    half = len(ids) // 2
+    train_ids, test_ids = ids[:half], ids[half:]
+    Xtr, ytr = [], []
+    for iid in train_ids:
+        for xy, f in zip(per[iid]["far_xy"], per[iid]["far_X"]):
+            Xtr.append(f)
+            ytr.append(1 if _tp_mask([xy], per[iid]["boxes"]) else 0)
+    gate = PrecisionGate(threshold=threshold).fit(Xtr, ytr)
+
+    def score(use_nms):
+        tp = fp = fn = 0
+        for iid in test_ids:
+            kept = _kept_points_per_image(gate, per, iid)
+            if use_nms:
+                kept = merge_close_points(kept, min_dist)
+            t = len(_tp_mask(kept, per[iid]["boxes"]))
+            tp += t; fp += len(kept) - t; fn += len(per[iid]["boxes"]) - t
+        return metrics_from_counts(tp, fp, tp + fn)
+
+    return {"gate": score(False), "gate_nms": score(True)}
+
+
 def main():
     os.makedirs("results", exist_ok=True)
     ann = json.load(open(GT_PATH))
     ids = sorted(im["id"] for im in ann["images"])
 
     lines = ["# Precision-gate improvement — held-out results", "",
-             "Image-disjoint split: gate trained on first 111 images, evaluated on last 111.",
-             "Metrics are one-to-one matched, gap=10, on the test half only.", "",
+             "Gate: HistGradientBoosting on 10 crop features (8 appearance + dist-to-WBF",
+             "+ blob compactness); far-from-box points only; near-box points kept.",
+             "+NMS merges kept points closer than 26 px (over-split duplicates).",
+             "Image-disjoint split: trained on first 111 images, evaluated on last 111,",
+             "one-to-one matched, gap=10.", "",
              "| config | precision | recall | F1 |", "|---|---|---|---|"]
-    for thr in (0.4, 0.5, 0.6, 0.7):
-        res = evaluate(threshold=thr, seed_order=ids)
-        if thr == 0.4:
-            bP, bR, bF = res["baseline"]
-            lines.append(f"| baseline (keep all far pts) | {bP:.3f} | {bR:.3f} | {bF:.3f} |")
-        gP, gR, gF = res["gated"]
-        lines.append(f"| gated @P>={thr} | {gP:.3f} | {gR:.3f} | {gF:.3f} |")
-    lines += ["", "Reference (full test set, Phase-1): integrated F1 0.897, WBF ensemble F1 0.921."]
+    # baseline (no gate) once
+    b = evaluate(threshold=0.4, seed_order=ids)["baseline"]
+    lines.append(f"| integrated (no gate) | {b[0]:.3f} | {b[1]:.3f} | {b[2]:.3f} |")
+    for thr in (0.4, 0.5):
+        r = evaluate_nms(threshold=thr, min_dist=26.0, seed_order=ids)
+        g = r["gate"]; n = r["gate_nms"]
+        lines.append(f"| gate @{thr} | {g[0]:.3f} | {g[1]:.3f} | {g[2]:.3f} |")
+        lines.append(f"| gate @{thr} + NMS | {n[0]:.3f} | {n[1]:.3f} | {n[2]:.3f} |")
+    lines += ["", "Reference: WBF ensemble F1 0.921 (Phase-1)."]
     open("results/improvement_table.md", "w").write("\n".join(lines) + "\n")
     print("\n".join(lines))
 

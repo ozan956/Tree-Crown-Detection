@@ -1,6 +1,7 @@
 import numpy as np
 from improvement.precision_gate import (
     crop_features, box_centers, is_near_box, split_points, PrecisionGate,
+    merge_close_points,
 )
 
 
@@ -27,9 +28,20 @@ def test_crop_features_shape_and_border():
     img = np.zeros((64, 64, 3), dtype=np.uint8)
     img[:, :, 1] = 120  # green-ish
     f = crop_features(img, 32, 32, r=16)
-    assert f is not None and len(f) == 8
+    assert f is not None and len(f) == 8          # 8-D without context (back-compat)
+    f2 = crop_features(img, 32, 32, r=16, wbf_centers=[(0.0, 0.0)])
+    assert len(f2) == 10                          # +dist_wbf +compactness
+    assert f2[8] > 0                              # dist to (0,0) box is positive
     # a point whose crop is fully outside the image yields None
     assert crop_features(img, -100, -100, r=4) is None
+
+
+def test_merge_close_points():
+    pts = [(10, 10), (12, 11), (100, 100)]        # first two within 26px -> merge
+    kept = merge_close_points(pts, min_dist=26.0)
+    assert kept == [(10, 10), (100, 100)]
+    # nothing merges when all far apart
+    assert merge_close_points([(0, 0), (50, 50)], 26.0) == [(0, 0), (50, 50)]
 
 
 def test_gate_learns_separable_features():

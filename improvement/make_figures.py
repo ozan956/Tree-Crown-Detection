@@ -36,15 +36,15 @@ METHODS = [  # name, precision, recall, f1  (one-to-one, score>=0.8)
     ("Density-map",   0.888, 0.834, 0.860),
     ("WBF ensemble",  0.968, 0.878, 0.921),
     ("Integrated",    0.833, 0.971, 0.897),
-    ("Integrated+gate", 0.893, 0.957, 0.924),
+    ("Integrated+gate", 0.941, 0.949, 0.945),
 ]
 GATE = [  # threshold, precision, recall, f1, beyond_ceiling_retained_frac
     (0.0, 0.828, 0.973, 0.894, 1.00),  # baseline (no gate) approx at thr->0
-    (0.3, 0.865, 0.966, 0.913, 0.98),
-    (0.4, 0.893, 0.957, 0.924, 0.94),
-    (0.5, 0.918, 0.940, 0.929, 0.78),
-    (0.6, 0.942, 0.921, 0.931, 0.55),
-    (0.7, 0.962, 0.908, 0.934, 0.38),
+    (0.3, 0.921, 0.959, 0.940, 0.90),
+    (0.4, 0.932, 0.954, 0.943, 0.86),
+    (0.5, 0.941, 0.949, 0.945, 0.80),
+    (0.6, 0.951, 0.942, 0.946, 0.73),
+    (0.7, 0.960, 0.936, 0.948, 0.67),
 ]
 COVERAGE = [  # source, pct
     ("YOLOv3",        86.6), ("Faster R-CNN", 86.1), ("Swin", 86.5),
@@ -174,13 +174,13 @@ def fig_gate_dial():
         ax.annotate(f"{int(rr*100)}% kept", (t, f), textcoords="offset points",
                     xytext=(0, 9), ha="center", fontsize=8, color=OI["black"])
     # mark recommended operating point
-    ax.scatter([0.4], [0.924], s=260, facecolors="none", edgecolors=OI["green"], linewidths=2, zorder=6)
-    ax.annotate("recommended\n(0.4): 94% recoveries kept,\n$F_1$ still > WBF", (0.4, 0.924),
-                textcoords="offset points", xytext=(18, -38), fontsize=8, color=OI["green"],
+    ax.scatter([0.5], [0.945], s=260, facecolors="none", edgecolors=OI["green"], linewidths=2, zorder=6)
+    ax.annotate("recommended (0.5):\n80% recoveries kept", (0.5, 0.945),
+                textcoords="offset points", xytext=(-95, -34), fontsize=8, color=OI["green"],
                 arrowprops=dict(arrowstyle="->", color=OI["green"], lw=1.2))
     ax.set_xlabel("Gate acceptance threshold")
     ax.set_ylabel("$F_1$")
-    ax.set_ylim(0.88, 0.945)
+    ax.set_ylim(0.88, 0.955)
     ax.legend(loc="lower right", fontsize=8.5)
     _save(fig, "fig5_gate_dial")
 
