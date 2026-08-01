@@ -12,6 +12,7 @@ All numbers trace to the committed results files.
 | `fig4_beyond_ceiling_features.png` | Beyond-ceiling vs detected crown properties | The *mechanism*: recovered crowns are smaller/fainter/more textured |
 | `fig5_gate_dial.png` | Gate threshold vs $F_1$, with recovery-retention labels | Resolves the gate-vs-novelty tension; recommends the 0.4 operating point |
 | `fig6_density_baseline.png` | Density-map: detector $F_1$ vs counting MAE | Modern baseline — strong counter, weaker detector |
+| `fig7_scene_holdout.png` | (L) recovery gain vs detector strength per scene (corr −0.98); (R) gate ΔF1 on held-out scenes | Generalization — recovery is targeted; gate transfers to unseen scenes |
 
 Existing qualitative figures also available: `pr_curve.png` (WBF PR curve +
 integrated point), `improvement_pr.png` (gate before/after), and
