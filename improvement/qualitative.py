@@ -61,7 +61,7 @@ def _grid(panels, cols=3, pad=6):
     return np.vstack(rows)
 
 
-def vhrtrees_panels(ids=(100, 88, 185, 2, 102, 126)):
+def vhrtrees_panels(ids=(88, 83, 72, 184, 154, 100)):  # size-varied: large->mixed->small crowns
     from evaluation.io_utils import load_gt, load_points
     from improvement.beyond_ceiling import dl_union_centers, _box_hit
     IMGDIR = "wbf_test-20260731T192532Z-1-002/wbf_test/beril-ozan-cem-work/new_idea/beril_work_test/inputs"
@@ -78,8 +78,11 @@ def vhrtrees_panels(ids=(100, 88, 185, 2, 102, 126)):
         show = [b for b in boxes if _box_hit(uc, b) or _box_hit(ic, b)]  # only show detected-by-something
         show_flags = [_box_hit(uc, b) for b in show]
         n_rec = sum(1 for f in show_flags if not f)
+        import numpy as _np
+        med_area = int(_np.median([(b[2]-b[0])*(b[3]-b[1]) for b in boxes])) if boxes else 0
         p = _draw(img, show, show_flags)
         cv2.putText(p, f"+{n_rec} recovered", (8, 24), cv2.FONT_HERSHEY_SIMPLEX, 0.7, RED, 2, cv2.LINE_AA)
+        cv2.putText(p, f"median crown {med_area}px^2", (8, img.shape[0]-12), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 1, cv2.LINE_AA)
         panels.append(p)
     return panels
 
