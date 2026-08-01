@@ -18,3 +18,14 @@ Existing qualitative figures also available: `pr_curve.png` (WBF PR curve +
 integrated point), `improvement_pr.png` (gate before/after), and
 `beyond_ceiling_crops.png` (sample recovered crowns — evidence they are real).
 | `fig8_neon_cross.png` | NEON cross-dataset: coverage + recovered-crown size dist | Generalization — mechanism replicates on US forests (DeepForest detector) |
+
+## Qualitative overlays (both datasets, for visual comparison)
+| File | Shows |
+|---|---|
+| `qual_vhrtrees.png` | 6 VHRTrees images: GT boxes (grey), deep-detector hits (blue), beyond-ceiling recoveries (red) |
+| `qual_neon.png` | 6 NEON images, same overlay with DeepForest as the detector — mechanism visible in a different biome |
+
+Red dots = trees the deep detector missed that the traditional/integrated step
+recovered. On NEON, some reds in dense canopy are the known traditional
+over-firing (precision-0.25 caveat, see NEON_CROSS_DATASET.md) — not all are
+clean recoveries.
