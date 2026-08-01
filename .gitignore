@@ -15,3 +15,4 @@ data_neon/
 overleaf/*.pdf
 overleaf/*.bbl
 overleaf.zip
+results/detections_all/
