@@ -9,3 +9,5 @@ opencv-python-headless>=4.8
 # GPU build shown; install the wheel matching your CUDA (see pytorch.org).
 torch>=2.0
 torchvision>=0.15
+# Cross-dataset test (improvement/neon/): field-standard NEON detector baseline.
+deepforest>=2.0

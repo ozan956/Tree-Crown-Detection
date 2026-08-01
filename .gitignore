@@ -3,3 +3,4 @@ wbf_test-*/
 __pycache__/
 *.pyc
 results/density_model.pt
+data_neon/

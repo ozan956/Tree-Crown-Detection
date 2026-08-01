@@ -17,3 +17,4 @@ All numbers trace to the committed results files.
 Existing qualitative figures also available: `pr_curve.png` (WBF PR curve +
 integrated point), `improvement_pr.png` (gate before/after), and
 `beyond_ceiling_crops.png` (sample recovered crowns — evidence they are real).
+| `fig8_neon_cross.png` | NEON cross-dataset: coverage + recovered-crown size dist | Generalization — mechanism replicates on US forests (DeepForest detector) |
