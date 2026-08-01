@@ -5,3 +5,7 @@ matplotlib>=3.7
 pytest>=7.4
 scikit-learn>=1.3
 opencv-python-headless>=4.8
+# Density-map baseline (improvement/density/): learned CSRNet-style counter.
+# GPU build shown; install the wheel matching your CUDA (see pytorch.org).
+torch>=2.0
+torchvision>=0.15
