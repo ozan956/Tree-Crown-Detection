@@ -16,3 +16,5 @@ overleaf/*.pdf
 overleaf/*.bbl
 overleaf.zip
 results/detections_all/
+results/overlay_vhrtrees/
+results/overlay_neon/
