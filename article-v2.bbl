@@ -76,6 +76,28 @@ Dong Ren, Falin Li, Hang Sun, Li~Liu, Shun Ren, and Mei Yu.
   segmentation of high-resolution remote sensing images.
 \newblock {\em International Journal of Remote Sensing}, 45(1):101--120, 2024.
 
+\bibitem{weinstein2019individual}
+Ben~G Weinstein, Sergio Marconi, Stephanie Bohlman, Alina Zare, and Ethan
+  White.
+\newblock Individual tree-crown detection in rgb imagery using semi-supervised
+  deep learning neural networks.
+\newblock {\em Remote Sensing}, 11(11):1309, 2019.
+
+\bibitem{weinstein2020deepforest}
+Ben~G Weinstein, Sergio Marconi, M{\'e}laine Aubry-Kientz, Gregoire Vincent,
+  Henry Senyondo, and Ethan~P White.
+\newblock Deepforest: A python package for rgb deep learning tree crown
+  delineation.
+\newblock {\em Methods in Ecology and Evolution}, 11(12):1743--1751, 2020.
+
+\bibitem{kirillov2023segment}
+Alexander Kirillov, Eric Mintun, Nikhila Ravi, Hanzi Mao, Chloe Rolland, Laura
+  Gustafson, Tete Xiao, Spencer Whitehead, Alexander~C Berg, Wan-Yen Lo, Piotr
+  Doll{\'a}r, and Ross Girshick.
+\newblock Segment anything.
+\newblock In {\em Proceedings of the IEEE/CVF International Conference on
+  Computer Vision (ICCV)}, pages 4015--4026, 2023.
+
 \bibitem{niccolai2010decision}
 Andrew~M Niccolai, Aaron Hohl, Melissa Niccolai, and Chadwick~Dearing Oliver.
 \newblock Decision rule-based approach to automatic tree crown detection and
@@ -138,6 +160,12 @@ Yang Liu, Peng Sun, Nickolas Wergeles, and Yi~Shang.
   small object detection.
 \newblock {\em Expert Systems with Applications}, 172:114602, 2021.
 
+\bibitem{cai2018cascade}
+Zhaowei Cai and Nuno Vasconcelos.
+\newblock Cascade r-cnn: Delving into high quality object detection.
+\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition (CVPR)}, pages 6154--6162, 2018.
+
 \bibitem{redmon2016you}
 J~Redmon.
 \newblock You only look once: Unified, real-time object detection.
@@ -185,5 +213,20 @@ Kai Chen, Jiaqi Wang, Jiangmiao Pang, Yuhang Cao, Yu~Xiong, Xiaoxiao Li,
   Shuyang Sun, Wansen Feng, Ziwei Liu, Jiarui Xu, et~al.
 \newblock Mmdetection: Open mmlab detection toolbox and benchmark.
 \newblock {\em arXiv:1906.07155}, 2019.
+
+\bibitem{weinstein2021benchmark}
+Ben~G Weinstein, Sarah~J Graves, Sergio Marconi, Aditya Singh, Alina Zare,
+  Dylan Stewart, Stephanie~A Bohlman, and Ethan~P White.
+\newblock A benchmark dataset for canopy crown detection and delineation in
+  co-registered airborne rgb, lidar and hyperspectral imagery from the national
+  ecological observation network.
+\newblock {\em PLOS Computational Biology}, 17(7):e1009180, 2021.
+
+\bibitem{li2018csrnet}
+Yuhong Li, Xiaofan Zhang, and Deming Chen.
+\newblock Csrnet: Dilated convolutional neural networks for understanding the
+  highly congested scenes.
+\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition (CVPR)}, pages 1091--1100, 2018.
 
 \end{thebibliography}
